@@ -36,7 +36,7 @@ class RuleDataset(Dataset):
     def __getitem__(self, idx):
         rel = self.idx2rel[idx]
         _rules = self.rules[rel]
-        path_count = np.zeros(shape=(self.e_num,self.e_num))
+        path_count = sparse.dok_matrix((self.e_num,self.e_num))
         for rule in _rules:
             head, body, conf_1, conf_2 = rule
             if conf_1 >=self.args.threshold:
@@ -161,7 +161,7 @@ def kg_completion(rules, dataset, args):
         
         for idx in range(len(heads)):
             head = heads[idx]
-            score_count = score_counts[idx]
+            score_count = score_counts[idx].todense()
             body2mat[head] = score_count
 
     
