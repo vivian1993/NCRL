@@ -39,13 +39,13 @@ class RuleDataset(Dataset):
         path_count = sparse.dok_matrix((self.e_num,self.e_num))
         for rule in _rules:
             head, body, conf_1, conf_2 = rule
-            if conf_1 >=self.args.threshold:
-                body_adj = sparse.eye(self.e_num)
-                for b_rel in body:
-                    body_adj = body_adj * self.r2mat[b_rel] 
+
+            body_adj = sparse.eye(self.e_num)
+            for b_rel in body:
+                body_adj = body_adj * self.r2mat[b_rel] 
                     
-                body_adj = body_adj * conf_1
-                path_count+=body_adj
+            body_adj = body_adj * conf_1
+            path_count+=body_adj
         
         return rel, path_count
     
