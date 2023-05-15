@@ -174,36 +174,20 @@ def kg_completion(rules, dataset, args):
             continue
         print ("{}\t{}\t{}".format(q_h, q_r, q_t))
         pred = np.squeeze(np.array(body2mat[q_r][ent2idx[q_h]]))
-
-        if pred[ent2idx[q_t]]!=0:
-            pred_ranks = np.argsort(pred)[::-1]    
-            
-            truth = gt[(q_h, q_r)]
-            truth = [t for t in truth if t!=ent2idx[q_t]]
-
-            
-            filtered_ranks = []
-            for i in range(len(pred_ranks)):
-                idx = pred_ranks[i]
-                if idx not in truth:
-                    filtered_ranks.append(idx)
-                    
-            rank = filtered_ranks.index(ent2idx[q_t])+1
-            
-        else:
-            truth = gt[(q_h, q_r)]
-            
-            filtered_pred = []
-            
-            for i in range(len(pred)):
-                if i not in truth:
-                    filtered_pred.append(pred[i])
-                    
-            
-            n_non_zero = np.count_nonzero(filtered_pred)
-            rank = n_non_zero+1
-
         
+        pred_ranks = np.argsort(pred)[::-1]    
+
+        truth = gt[(q_h, q_r)]
+        truth = [t for t in truth if t!=ent2idx[q_t]]
+        
+        filtered_ranks = []
+        for i in range(len(pred_ranks)):
+            idx = pred_ranks[i]
+            if idx not in truth and pred[idx]> pred[ent2idx[q_t]]:
+                filtered_ranks.append(idx)
+                
+        rank = len(filtered_ranks)+1
+      
         mrr.append(1.0/rank)
         head2mrr[q_r].append(1.0/rank)
         
