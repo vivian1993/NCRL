@@ -156,14 +156,6 @@ def train(args, dataset):
             clip_grad_norm_(model.parameters(), 0.5)
             loss.backward()
             optimizer.step()
-            
-        import matplotlib.pyplot as plt
-        plt.xlabel("Epochs")
-        plt.ylabel("Accuracy")
-        plt.title("LogicFormer Epoch vs Accurary")
-        train_acc[rule_len] = [float(x) for x in train_acc[rule_len]]
-        plt.plot(train_acc[rule_len])
-        plt.savefig('../figures/{}_{}.png'.format(args.model,rule_len))
         
     end = time.time()
     print("Time usage: {:.2}".format(end - start))
