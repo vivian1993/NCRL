@@ -23,7 +23,7 @@ def parse_rdf(rdf):
     """
         return: head, relation, tail
     """
-    rdf_tail, rdf_rel, rdf_head = rdf
+    rdf_head, rdf_rel, rdf_tail = rdf
     return rdf_head, rdf_rel, rdf_tail
 
 
